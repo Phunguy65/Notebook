@@ -89,7 +89,7 @@ template <typename T> struct SingleLinkedListIterator
     SingleLinkedListIterator() noexcept : _nodeBase()
     {
     }
-    explicit SingleLinkedListIterator(SingleLinkedListNodeBase *nodeBase) noexcept : _nodeBase()
+    explicit SingleLinkedListIterator(SingleLinkedListNodeBase *nodeBase) noexcept : _nodeBase(nodeBase)
     {
     }
     T &operator*() const noexcept
@@ -229,11 +229,11 @@ template <typename T, typename _Alloc> struct SingleLinkedListBase
     }
     _NodeAllocatorType &GetNodeAllocator() noexcept
     {
-        return this->_linkedListCore;
+        return *static_cast<_NodeAllocatorType *>(&_linkedListCore);
     }
     const _NodeAllocatorType &GetNodeAllocator() const noexcept
     {
-        return this->_linkedListCore;
+        return *static_cast<const _NodeAllocatorType *>(&_linkedListCore);
     }
     _TAllocatorType GetTAllocator() const noexcept
     {
@@ -252,6 +252,19 @@ template <typename T, typename _Alloc> struct SingleLinkedListBase
     void PutNode(SingleLinkedListNode<T> *node)
     {
         this->_linkedListCore.DeAllocate(node, 1);
+    }
+    template <typename... Args> _Node *CreateNode(Args &&...args)
+    {
+        _Node *node = this->GetNode();
+        try
+        {
+            GetNodeAllocator().Construct(node, std::forward<Args>(args)...);
+        }
+        catch (...)
+        {
+            this->PutNode(node);
+        }
+        return node;
     }
 
     template <typename... Args> SingleLinkedListNodeBase *InsertAfter(_ConstIterator pos, Args &&...args);
@@ -314,11 +327,11 @@ template <typename T, typename _Alloc = Allocator<T>()> class SingleLinkedList :
     {
         return _ConstIterator(nullptr);
     }
-    _Iterator GetBeginBeforeHead()
+    _Iterator GetBeginFromHead()
     {
         return _Iterator(&this->_linkedListCore._nodeHead);
     }
-    _Iterator GetConstBeginBeforeHead() const noexcept
+    _Iterator GetConstBeginFromHead() const noexcept
     {
         return _ConstIterator(&this->_linkedListCore._nodeHead);
     }
@@ -328,11 +341,65 @@ template <typename T, typename _Alloc = Allocator<T>()> class SingleLinkedList :
         return this->_linkedListCore._nodeHead._pNext == nullptr;
     }
 
+    _SizeType MaxSize() const
+    {
+        return GetNodeAllocator().MaxSize();
+    }
     _Reference GetItemFront()
     {
         _Node *front = static_cast<_Node *>(this->_linkedListCore._nodeHead._pNext);
-        return *front.;
+        return *front->GetValuePtr();
     }
+    _ConstReference GetItemFront() const
+    {
+        _Node *front = static_cast<_Node *>(this->_linkedListCore._nodeHead._pNext);
+        return *front->GetValuePtr();
+    }
+    template <typename... Args> void EmplaceFront(Args &&...args)
+    {
+        _Base::InsertAfter(this->GetBeginFromHead(), std::forward<Args>(args)...);
+    }
+    void PushFront(const T &value)
+    {
+        _Base::InsertAfter(this->GetBeginFromHead(), value);
+    }
+    void PushFront(T &&value)
+    {
+        _Base::InsertAfter(this->GetBeginFromHead(), std::move(value));
+    }
+    void PopFront()
+    {
+        this->EraseAfter(&this->_linkedListCore._nodeHead);
+    }
+    template <typename... Args> _Iterator EmplaceAfter(_ConstIterator pos, Args &&...args)
+    {
+        return _Iterator(_Base::InsertAfter(pos, std::forward<Args>(args)...));
+    }
+    _Iterator InsertAfter(_ConstIterator pos, const T &value)
+    {
+        return _Iterator(_Base::InsertAfter(pos, value));
+    }
+    _Iterator InsertAfter(_ConstIterator pos, T &&value)
+    {
+        return _Iterator(_Base::InsertAfter(pos), std::move(value));
+    }
+    _Iterator InsertAfter(_ConstIterator pos, _SizeType size, const T &value);
+    _Iterator EraseAfter(_ConstIterator pos)
+    {
+        return _Iterator(_Base::EraseAfter(const_cast<_NodeBase *>(pos.nodeBase)));
+    }
+    _Iterator EraseAfter(_ConstIterator pos, _ConstIterator last)
+    {
+        return _Iterator(_Base::EraseAfter(const_cast<_NodeBase *>(pos.nodeBase)),
+                         const_cast<_NodeBase *>(last.nodeBase));
+    }
+    void Resize(_SizeType size);
+    void Resize(_SizeType size, const _ValueType &value);
+    void Clear() noexcept
+    {
+        _Base::EraseAfter(&this->_linkedListCore._nodeHead, 0);
+    }
+    void Remove(const T &value);
 
   protected:
     using _Base::GetNode;
@@ -340,19 +407,6 @@ template <typename T, typename _Alloc = Allocator<T>()> class SingleLinkedList :
     using _Base::GetTAllocator;
     using _Base::PutNode;
     using _Base::SingleLinkedListCore;
-    template <typename... Args> _Node *CreateNode(Args &&...args)
-    {
-        _Node *node = this->GetNode();
-        try
-        {
-            GetNodeAllocator().Construct(node, std::forward<Args>(args)...);
-        }
-        catch (...)
-        {
-            this->PutNode(node);
-        }
-        return node;
-    }
 
   private:
     void FillInitialize(_SizeType size, const T &value);
