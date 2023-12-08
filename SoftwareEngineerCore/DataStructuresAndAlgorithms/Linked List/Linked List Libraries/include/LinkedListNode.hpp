@@ -4,7 +4,6 @@
 #define LINKED_LIST_NODE 1
 #include "Allocator.hpp"
 #include <algorithm>
-#include <asm-generic/errno.h>
 #include <cstddef>
 #include <exception>
 #include <memory>

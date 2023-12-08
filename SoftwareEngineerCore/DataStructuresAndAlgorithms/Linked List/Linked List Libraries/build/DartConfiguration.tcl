@@ -4,17 +4,17 @@
 
 
 # Configuration directories and files
-SourceDirectory: /home/PNguyen/Workspace/Notebook/SoftwareEngineerCore/DataStructuresAndAlgorithms/Linked List/Linked List Libraries
-BuildDirectory: /home/PNguyen/Workspace/Notebook/SoftwareEngineerCore/DataStructuresAndAlgorithms/Linked List/Linked List Libraries/build
+SourceDirectory: C:/Users/PNguyen/Desktop/Workspace/Notebook/SoftwareEngineerCore/DataStructuresAndAlgorithms/Linked List/Linked List Libraries
+BuildDirectory: C:/Users/PNguyen/Desktop/Workspace/Notebook/SoftwareEngineerCore/DataStructuresAndAlgorithms/Linked List/Linked List Libraries/build
 
 # Where to place the cost data store
 CostDataFile: 
 
 # Site is something like machine.domain, i.e. pragmatic.crd
-Site: PNguyen
+Site: DESKTOP-PVSHPP4
 
 # Build name is osname-revision-compiler, i.e. Linux-2.4.2-2smp-c++
-BuildName: Linux-g++
+BuildName: Win32-ninja
 
 # Subprojects
 LabelsForSubprojects: 
@@ -27,8 +27,8 @@ SubmitInactivityTimeout:
 NightlyStartTime: 00:00:00 EDT
 
 # Commands for the build/test/submit cycle
-ConfigureCommand: "/usr/bin/cmake" "/home/PNguyen/Workspace/Notebook/SoftwareEngineerCore/DataStructuresAndAlgorithms/Linked List/Linked List Libraries"
-MakeCommand: /usr/bin/cmake --build . --config "${CTEST_CONFIGURATION_TYPE}" -- -i
+ConfigureCommand: "C:/Program Files/CMake/bin/cmake.exe" "C:/Users/PNguyen/Desktop/Workspace/Notebook/SoftwareEngineerCore/DataStructuresAndAlgorithms/Linked List/Linked List Libraries"
+MakeCommand: "C:\Program Files\CMake\bin\cmake.exe" --build . --config "${CTEST_CONFIGURATION_TYPE}"
 DefaultCTestConfigurationType: Release
 
 # version control
@@ -63,8 +63,8 @@ UpdateOptions:
 UpdateType: 
 
 # Compiler info
-Compiler: /usr/bin/g++
-CompilerVersion: 13.2.1
+Compiler: C:/msys64/ucrt64/bin/clang++.exe
+CompilerVersion: 17.0.2
 
 # Dynamic analysis (MemCheck)
 PurifyCommand: 
@@ -81,7 +81,7 @@ MemoryCheckCommandOptions:
 MemoryCheckSuppressionFile: 
 
 # Coverage
-CoverageCommand: /usr/bin/gcov
+CoverageCommand: C:/msys64/ucrt64/bin/gcov.exe
 CoverageExtraFlags: -l
 
 # Testing options

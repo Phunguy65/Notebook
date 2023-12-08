@@ -1,12 +1,9 @@
 
 #ifndef ALLOCATOR_H
 #define ALLOCATOR_H 1
-
-#include <cstddef>
-#include <functional>
-#include <limits>
 #include <new>
 #include <utility>
+#include <memory>
 namespace MemoryManagement
 {
 
