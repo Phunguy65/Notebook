@@ -410,7 +410,7 @@ template <typename T, typename _Alloc = Allocator<T>()> class SingleLinkedList :
   private:
     void FillInitialize(_SizeType size, const T &value);
     void DefaultInitialize(_SizeType size);
-    void RangInitialize();
+    void RangeInitialize();
 };
 
 } // namespace LinkedList

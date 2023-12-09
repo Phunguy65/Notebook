@@ -1,8 +1,0 @@
-[
-{
-  "directory": "C:/Users/PNguyen/Desktop/Workspace/Notebook/SoftwareEngineerCore/DataStructuresAndAlgorithms/Linked List/Linked List Libraries/build",
-  "command": "C:\\msys64\\ucrt64\\bin\\clang++.exe -g -o CMakeFiles\\LinkedListLibraries.dir\\LinkedListLibraries.cpp.obj -c \"C:\\Users\\PNguyen\\Desktop\\Workspace\\Notebook\\SoftwareEngineerCore\\DataStructuresAndAlgorithms\\Linked List\\Linked List Libraries\\LinkedListLibraries.cpp\"",
-  "file": "C:\\Users\\PNguyen\\Desktop\\Workspace\\Notebook\\SoftwareEngineerCore\\DataStructuresAndAlgorithms\\Linked List\\Linked List Libraries\\LinkedListLibraries.cpp",
-  "output": "CMakeFiles\\LinkedListLibraries.dir\\LinkedListLibraries.cpp.obj"
-}
-]
