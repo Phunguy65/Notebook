@@ -1,14 +1,8 @@
-
-#pragma onece
 #ifndef LINKED_LIST_NODE
 #define LINKED_LIST_NODE 1
 #include "Allocator.hpp"
 #include <algorithm>
 #include <cstddef>
-#include <exception>
-#include <memory>
-#include <new>
-#include <ostream>
 #include <utility>
 using namespace MemoryManagement;
 namespace DataStructuresAndAlgorithms
@@ -392,6 +386,7 @@ template <typename T, typename _Alloc = Allocator<T>()> class SingleLinkedList :
         return _Iterator(_Base::EraseAfter(const_cast<_NodeBase *>(pos.nodeBase)),
                          const_cast<_NodeBase *>(last.nodeBase));
     }
+    template<typename _InputIterator> void Assign(_InputIterator first, _InputIterator _last);
     void Resize(_SizeType size);
     void Resize(_SizeType size, const _ValueType &value);
     void Clear() noexcept
@@ -399,8 +394,7 @@ template <typename T, typename _Alloc = Allocator<T>()> class SingleLinkedList :
         _Base::EraseAfter(&this->_linkedListCore._nodeHead, 0);
     }
     void Remove(const T &value);
-
-  protected:
+      protected:
     using _Base::GetNode;
     using _Base::GetNodeAllocator;
     using _Base::GetTAllocator;
@@ -409,8 +403,10 @@ template <typename T, typename _Alloc = Allocator<T>()> class SingleLinkedList :
 
   private:
     void FillInitialize(_SizeType size, const T &value);
+    
     void DefaultInitialize(_SizeType size);
-    void RangeInitialize();
+    
+    template<typename _InputIterator> void RangeInitialize(_InputIterator first, _InputIterator last);
 };
 
 } // namespace LinkedList

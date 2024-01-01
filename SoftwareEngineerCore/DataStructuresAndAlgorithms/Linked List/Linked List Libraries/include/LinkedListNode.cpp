@@ -42,6 +42,41 @@ SingleLinkedListNodeBase *SingleLinkedListBase<T, _Alloc>::EraseAfter(SingleLink
         PutNode(temp);
     }
 }
+
+template<typename T, typename _Alloc> template<typename _InputIterator> void SingleLinkedList<T, _Alloc>::RangeInitialize(_InputIterator first, _InputIterator last){
+    _NodeBase *temp = &this->_linkedListCore._nodeHead;
+    while (first!=last) {
+    temp->_pNext = this->CreateNode(*first);
+    temp = temp->_pNext;
+    ++first;
+    }
+}
+
+template<typename T, typename _Alloc> void SingleLinkedList<T,_Alloc>::DefaultInitialize(_SizeType size){
+    _NodeBase *temp = &this->_linkedListCore._nodeHead;
+    while (size) {
+        temp->_pNext = this->CreateNode();
+        temp = temp->_pNext;
+        --size;
+    }
+}
+
+template<typename T, typename _Alloc> void SingleLinkedList<T,_Alloc>::FillInitialize(_SizeType size, const T &value){
+    _NodeBase* temp = &this->_linkedListCore._nodeHead;
+    while (size) {
+        temp->_pNext=this->CreateNode(value);
+        temp = temp->_pNext;
+    }
+}
+
+template<typename T, typename _Alloc> SingleLinkedList<T,_Alloc>& SingleLinkedList<T,_Alloc>::operator=(const SingleLinkedList& list){
+    if(this != &list){
+        Clear();
+    }
+    return *this;
+}
+
+
 } // namespace LinkedList
 } // namespace DataStructuresAndAlgorithms
 #endif

@@ -1,4 +1,5 @@
 
+#include <limits>
 #ifndef ALLOCATOR_H
 #define ALLOCATOR_H 1
 #include <new>
